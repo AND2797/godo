@@ -24,11 +24,12 @@ func checkInit() bool {
     return false
 }
 
-func loadInit()  {
+func loadInit() (Todo) {
     initFile, _ := os.ReadFile("test.json")
     var todo Todo
     json.Unmarshal(initFile, &todo)
     fmt.Println(todo)
+    return todo
 
 
 }
@@ -42,11 +43,26 @@ func makeInit() {
 
 }
 
+func (todoList *Todo) saveInit() {
+
+    file, _ := json.MarshalIndent(todoList, "", "")
+    _ = os.WriteFile("test.json", file, 0644)
+
+
+
+}
+
+
 func render() {
 
 }
 
-func addEntry() {
+func (todoList *Todo) addEntry() {
+
+    newTask := &Task{}
+    newTask.TaskID = todoList.CurrentID + 1
+    newTask.TaskDescription = "test"
+    todoList.Tasks = append(todoList.Tasks, newTask)
 
 }
 

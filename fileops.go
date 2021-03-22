@@ -53,26 +53,36 @@ func (todoList *Todo) saveInit() {
 }
 
 
-func render() {
+func render(task *Task) {
+
+    fmt.Printf("%d     %s\n", task.TaskID, task.TaskDescription)
 
 }
 
-func (todoList *Todo) addEntry() {
-
+func (todoList *Todo) addEntry(args []string) {
+    description := args[0]
     newTask := &Task{}
+    todoList.CurrentID = todoList.CurrentID + 1
     newTask.TaskID = todoList.CurrentID + 1
-    newTask.TaskDescription = "test"
+    newTask.TaskDescription = description
     todoList.Tasks = append(todoList.Tasks, newTask)
+    todoList.saveInit()
 
 }
 
 
-func showEntries() {
+func (todoList *Todo) showEntries() {
+
+    for _, val := range todoList.Tasks {
+        render(val)
+    }
+
+
 }
 
-func checkEntry() {
+func checkEntry(args []string) {
 }
 
-func deleteEntry() {
+func deleteEntry(args []string) {
 }
 

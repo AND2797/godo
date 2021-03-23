@@ -10,9 +10,9 @@ import (
 func main() {
 
     args := os.Args[1:]
-    fmt.Println(args)
+    //fmt.Println(args)
 
-    if _, err := os.Stat("./test.json"); os.IsNotExist(err) {
+    if _, err := os.Stat("./test.json"); args[0] != "init" && os.IsNotExist(err) {
         fmt.Println("file does not exist")
         log.Fatal("end")
     }
@@ -25,7 +25,7 @@ func main() {
     } else if (args[0] == "l") {
         todoList.showEntries()
     } else if (args[0] == "c") {
-        checkEntry(args[1:])
+        todoList.checkEntry(args[1:])
     } else if (args[0] == "d") {
         deleteEntry(args[1:])
     }

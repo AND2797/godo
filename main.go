@@ -27,7 +27,7 @@ func main() {
     } else if (args[0] == "c") {
         todoList.checkEntry(args[1:])
     } else if (args[0] == "d") {
-        deleteEntry(args[1:])
+        todoList.deleteEntry(args[1:])
     }
 
 }

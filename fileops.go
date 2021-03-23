@@ -98,12 +98,27 @@ func (todoList *Todo) checkEntry(args []string) {
 
         if task.TaskID == taskNum {
             task.TaskStatus = true
+            continue
         }
-
     }
     todoList.saveInit()
 }
 
-func deleteEntry(args []string) {
+func (todoList *Todo) deleteEntry(args []string) {
+
+    var taskIdx int
+    taskNum, _ := strconv.Atoi(args[0])
+
+    for idx, task := range todoList.Tasks{
+        if task.TaskID == taskNum{
+            taskIdx = idx
+        }
+        if task.TaskID > taskNum{
+            task.TaskID = task.TaskID - 1
+        }
+    }
+    todoList.CurrentID = todoList.CurrentID - 1
+    todoList.Tasks = append(todoList.Tasks[:taskIdx], todoList.Tasks[taskIdx + 1:]...)
+    todoList.saveInit()
 }
 

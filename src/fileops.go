@@ -11,7 +11,7 @@ import (
 type Task struct{
     TaskID          int     `json:"taskID"`
     TaskDescription string  `json:"taskDescription"`
-    Project         string  `json:"project"`
+    TaskProject     string  `json:"project"`
     TaskStatus      bool    `json:"status"`
     Due             string  `json:"Due"`
 }
@@ -36,20 +36,15 @@ func loadInit() (Todo) {
 }
 
 func makeInit() {
-
     data := Todo{Tasks: make([]*Task,0)}
     file, _ := json.MarshalIndent(data, "", "")
-
     _ = os.WriteFile("test.json", file, 0644)
 
 }
 
 func (todoList *Todo) saveInit() {
-
     file, _ := json.MarshalIndent(todoList, "", "")
     _ = os.WriteFile("test.json", file, 0644)
-
-
 }
 
 
@@ -68,6 +63,11 @@ func render(task *Task) {
 func (todoList *Todo) addEntry(args []string) {
     description := args[0]
     newTask := &Task{}
+    var project string
+    if len(args) > 2 && args[2] == "project" {
+        project = args[3]
+        newTask.TaskProject = project
+    }
 
     todoList.CurrentID = todoList.CurrentID + 1
     newTask.TaskID = todoList.CurrentID
@@ -81,16 +81,12 @@ func (todoList *Todo) addEntry(args []string) {
 
 
 func (todoList *Todo) showEntries() {
-
     for _, val := range todoList.Tasks {
         render(val)
     }
-
-
 }
 
 func (todoList *Todo) checkEntry(args []string) {
-
     taskNum, _ := strconv.Atoi(args[0])
     for _, task := range todoList.Tasks {
 

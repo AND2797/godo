@@ -4,8 +4,6 @@ package main
 import (
         "strconv"
         "fmt"
-        "encoding/json"
-        "os"
     )
 
 type Task struct{
@@ -18,33 +16,11 @@ type Task struct{
 
 
 type Todo struct{
+    SavePath      string   `json:"config path"`
     CurrentID     int      `json:"currentID"`
     Tasks         []*Task  `json:"Task"`
 }
 
-func checkInit() bool {
-
-    return false
-}
-
-func loadInit() (Todo) {
-    initFile, _ := os.ReadFile("test.json")
-    var todo Todo
-    json.Unmarshal(initFile, &todo)
-    return todo
-
-}
-
-func makeInit() {
-    data := Todo{Tasks: make([]*Task,0)}
-    file, _ := json.MarshalIndent(data, "", "")
-    _ = os.WriteFile("test.json", file, 0644)
-}
-
-func (todoList *Todo) saveInit() {
-    file, _ := json.MarshalIndent(todoList, "", "")
-    _ = os.WriteFile("test.json", file, 0644)
-}
 
 
 func render(task *Task) {
@@ -77,9 +53,11 @@ func (todoList *Todo) addEntry(args []string) {
 }
 
 
-func (todoList *Todo) showEntries() {
-    for _, val := range todoList.Tasks {
-        render(val)
+func (todoList *Todo) showEntries(args []string) {
+    if len(args) == 0{
+        for _, val := range todoList.Tasks {
+             render(val)
+        }
     }
 }
 
@@ -89,7 +67,20 @@ func (todoList *Todo) checkEntry(args []string) {
 
         if task.TaskID == taskNum {
             task.TaskStatus = true
-            continue
+            break
+        }
+    }
+    todoList.saveInit()
+}
+
+func (todoList *Todo) uncheckEntry(args []string) {
+
+    taskNum, _ := strconv.Atoi(args[0])
+    for _, task := range todoList.Tasks {
+
+        if task.TaskID == taskNum {
+            task.TaskStatus = false
+            break
         }
     }
     todoList.saveInit()

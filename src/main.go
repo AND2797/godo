@@ -2,30 +2,38 @@ package main
 
 import (
         "fmt"
-        "log"
         "os"
     )
 
 func main() {
 
     args := os.Args[1:]
-
-    if _, err := os.Stat("./test.json"); args[0] != "init" && os.IsNotExist(err) {
-        fmt.Println("file does not exist")
-        log.Fatal("end")
+    configPath, err := getInitPath()
+    if err != nil{
+        return
     }
-    todoList := loadInit()
+
+    if _, err := os.Stat(configPath); args[0] != "init" && os.IsNotExist(err) {
+        fmt.Println("file does not exist")
+        os.Exit(1)
+    }
+    todoList, err := loadInit()
+    if err != nil{
+        return
+    }
 
     if (args[0] == "init") {
         makeInit()
     } else if (args[0] == "a") {
         todoList.addEntry(args[1:])
     } else if (args[0] == "l") {
-        todoList.showEntries()
+        todoList.showEntries(args[1:])
     } else if (args[0] == "c") {
         todoList.checkEntry(args[1:])
     } else if (args[0] == "d") {
         todoList.deleteEntry(args[1:])
+    } else if (args[0] == "u") {
+        todoList.uncheckEntry(args[1:])
     }
 
 }

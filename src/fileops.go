@@ -39,7 +39,6 @@ func makeInit() {
     data := Todo{Tasks: make([]*Task,0)}
     file, _ := json.MarshalIndent(data, "", "")
     _ = os.WriteFile("test.json", file, 0644)
-
 }
 
 func (todoList *Todo) saveInit() {
@@ -49,34 +48,32 @@ func (todoList *Todo) saveInit() {
 
 
 func render(task *Task) {
-
     var check string
+    var project string
     if task.TaskStatus {
         check = "[x]"
     } else {
         check = "[ ]"
     }
-    fmt.Printf("%d      %s   %s\n", task.TaskID, check, task.TaskDescription)
-
+    if task.TaskProject != ""{
+        project = fmt.Sprintf("project: %s", task.TaskProject)
+    }
+    fmt.Printf("%d      %s   %s     %s\n", task.TaskID, check, task.TaskDescription, project)
 }
 
 func (todoList *Todo) addEntry(args []string) {
     description := args[0]
     newTask := &Task{}
-    var project string
-    if len(args) > 2 && args[2] == "project" {
-        project = args[3]
-        newTask.TaskProject = project
+    if len(args) >= 2 && args[1] == "project" {
+        newTask.TaskProject = args[2]
     }
 
     todoList.CurrentID = todoList.CurrentID + 1
     newTask.TaskID = todoList.CurrentID
     newTask.TaskDescription = description
     newTask.TaskStatus = false
-
     todoList.Tasks = append(todoList.Tasks, newTask)
     todoList.saveInit()
-
 }
 
 
@@ -99,7 +96,6 @@ func (todoList *Todo) checkEntry(args []string) {
 }
 
 func (todoList *Todo) deleteEntry(args []string) {
-
     var taskIdx int
     taskNum, _ := strconv.Atoi(args[0])
 

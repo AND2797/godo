@@ -6,7 +6,6 @@ import (
     )
 
 func main() {
-
     args := os.Args[1:]
     configPath, err := getInitPath()
     if err != nil{
@@ -18,6 +17,7 @@ func main() {
         os.Exit(1)
     }
     todoList, err := loadInit()
+
     if err != nil{
         return
     }
@@ -36,20 +36,4 @@ func main() {
         case "u":
             todoList.uncheckEntry(args[1:])
         }
-
-    /*
-    if (args[0] == "init") {
-        makeInit()
-    } else if (args[0] == "a") {
-        todoList.addEntry(args[1:])
-    } else if (args[0] == "l") {
-        todoList.showEntries(args[1:])
-    } else if (args[0] == "c") {
-        todoList.checkEntry(args[1:])
-    } else if (args[0] == "d") {
-        todoList.deleteEntry(args[1:])
-    } else if (args[0] == "u") {
-        todoList.uncheckEntry(args[1:])
-    }*/
-
 }

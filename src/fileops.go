@@ -31,6 +31,7 @@ func render(task *Task) {
     } else {
         check = "[ ]"
     }
+
     if task.TaskProject != ""{
         project = fmt.Sprintf("project: %s", task.TaskProject)
     }
@@ -40,8 +41,8 @@ func render(task *Task) {
 func (todoList *Todo) addEntry(args []string) {
     description := args[0]
     newTask := &Task{}
-    if len(args) >= 2 && args[1] == "project" {
-        newTask.TaskProject = args[2]
+    if len(args) >= 2 && args[1] == "p" {
+        newTask.TaskProject = args[2][2:]
     }
 
     todoList.CurrentID = todoList.CurrentID + 1
@@ -52,12 +53,35 @@ func (todoList *Todo) addEntry(args []string) {
     todoList.saveInit()
 }
 
+func (todoList *Todo) showProjects(project string){
+    for _, val := range todoList.Tasks {
+        if val.TaskProject == project{
+            render(val)
+        }
+    }
+}
 
 func (todoList *Todo) showEntries(args []string) {
-    if len(args) == 0{
-        for _, val := range todoList.Tasks {
-             render(val)
-        }
+    argLength := len(args)
+
+    switch argLength := argLength; argLength{
+        case 0:
+            if len(args) == 0{
+                for _, val := range todoList.Tasks {
+                    render(val)
+                }
+            }
+        case 1:
+            cueArgs := args[0]
+            switch cuePrompt := args[0][0:2]; cuePrompt{
+                case "p:":
+                    todoList.showProjects(cueArgs[2:])
+                default:
+                    fmt.Println("no case match.")
+                }
+        default:
+            fmt.Println("default")
+
     }
 }
 

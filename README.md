@@ -10,3 +10,10 @@ Minimal task tracker written in Go.
 4. cd into the directory using `cd godo/src`
 5. Install using `go install`
 6. Run `godo`
+
+
+### TODO:
+
+- [ ] Print project specific notes.
+- [ ] Re-ordering lists.
+- [ ] Notes for each todo.

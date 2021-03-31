@@ -14,6 +14,7 @@ Minimal task tracker written in Go.
 
 ### TODO:
 
-- [ ] Print project specific notes.
-- [ ] Re-ordering lists.
+- [x] Print project specific tasks (pushed in dev branch)
+- [ ] Re-ordering lists. (?)
 - [ ] Notes for each todo.
+- [ ] Add server support & persistent online storage.

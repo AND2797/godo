@@ -35,5 +35,7 @@ func main() {
             todoList.deleteEntry(args[1:])
         case "u":
             todoList.uncheckEntry(args[1:])
+        case "n":
+            todoList.addNote(args[1:])
         }
 }

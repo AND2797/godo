@@ -7,11 +7,12 @@ import (
     )
 
 type Task struct{
-    TaskID          int     `json:"taskID"`
-    TaskDescription string  `json:"taskDescription"`
-    TaskProject     string  `json:"project"`
-    TaskStatus      bool    `json:"status"`
-    Due             string  `json:"Due"`
+    TaskID              int     `json:"taskID"`
+    TaskDescription     string  `json:"taskDescription"`
+    TaskProject         string  `json:"project"`
+    TaskStatus          bool    `json:"status"`
+    TaskDue             string  `json:"Due"`
+    TaskNote            string  `json:"Notes"`
 }
 
 
@@ -38,19 +39,41 @@ func render(task *Task) {
     fmt.Printf("%d      %s   %s     %s\n", task.TaskID, check, task.TaskDescription, project)
 }
 
+func (todoList *Todo) addNote(args  []string){
+    taskNum,_ := strconv.Atoi(args[0])
+    taskText := args[1]
+    for _, task := range todoList.Tasks {
+
+        if task.TaskID == taskNum {
+            task.TaskNote = taskText
+            break
+        }
+    }
+    todoList.saveInit()
+}
+
 func (todoList *Todo) addEntry(args []string) {
     description := args[0]
     newTask := &Task{}
     if len(args) >= 2 && args[1] == "p" {
         newTask.TaskProject = args[2][2:]
     }
-
     todoList.CurrentID = todoList.CurrentID + 1
     newTask.TaskID = todoList.CurrentID
     newTask.TaskDescription = description
     newTask.TaskStatus = false
     todoList.Tasks = append(todoList.Tasks, newTask)
     todoList.saveInit()
+}
+
+func (todoList *Todo) showNote(taskID string){
+    taskIDint, _ := strconv.Atoi(taskID)
+    for _, val := range todoList.Tasks{
+        if val.TaskID == taskIDint {
+            render(val)
+            fmt.Println("NOTE: ", val.TaskNote)
+        }
+    }
 }
 
 func (todoList *Todo) showProjects(project string){
@@ -76,6 +99,8 @@ func (todoList *Todo) showEntries(args []string) {
             switch cuePrompt := args[0][0:2]; cuePrompt{
                 case "p:":
                     todoList.showProjects(cueArgs[2:])
+                case "n:":
+                    todoList.showNote(cueArgs[2:])
                 default:
                     fmt.Println("no case match.")
                 }

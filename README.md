@@ -18,6 +18,6 @@ Minimal task tracker written in Go.
 - [ ] Re-ordering lists. (?)
 - [x] Notes for each todo. (pushed in dev)
 - [x] Rendering Notes. (pushed in dev)
-- [ ] Improve CLI
+- [ ] Improve CLI cues
 - [ ] Complete docs
 - [ ] Add server support & persistent online storage.

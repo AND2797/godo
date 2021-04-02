@@ -15,6 +15,6 @@ Minimal task tracker written in Go.
 - [x] Print project specific tasks (pushed in dev branch)
 - [x] Notes for each todo. (pushed in dev)
 - [x] Rendering Notes. (pushed in dev)
-- [ ] Improve CLI cues
+- [ ] Improve CLI command parsing
 - [ ] Complete docs
 - [ ] Add server support & persistent online storage.

@@ -7,6 +7,7 @@ import (
 
 func main() {
     args := os.Args[1:]
+    fmt.Println(args)
     configPath, err := getInitPath()
     if err != nil{
         return
@@ -25,17 +26,17 @@ func main() {
     switch command := args[0]; command {
         case "init":
             makeInit()
-        case "a":
+        case "-a":
             todoList.addEntry(args[1:])
-        case "l":
+        case "-l":
             todoList.showEntries(args[1:])
-        case "c":
+        case "-c":
             todoList.checkEntry(args[1:])
-        case "d":
+        case "-d":
             todoList.deleteEntry(args[1:])
-        case "u":
+        case "-u":
             todoList.uncheckEntry(args[1:])
-        case "n":
+        case "-n":
             todoList.addNote(args[1:])
         }
 }

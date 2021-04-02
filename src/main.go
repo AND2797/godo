@@ -6,8 +6,8 @@ import (
     )
 
 func main() {
-
     args := os.Args[1:]
+    fmt.Println(args)
     configPath, err := getInitPath()
     if err != nil{
         return
@@ -18,6 +18,7 @@ func main() {
         os.Exit(1)
     }
     todoList, err := loadInit()
+
     if err != nil{
         return
     }
@@ -25,31 +26,17 @@ func main() {
     switch command := args[0]; command {
         case "init":
             makeInit()
-        case "a":
+        case "-a":
             todoList.addEntry(args[1:])
-        case "l":
+        case "-l":
             todoList.showEntries(args[1:])
-        case "c":
+        case "-c":
             todoList.checkEntry(args[1:])
-        case "d":
+        case "-d":
             todoList.deleteEntry(args[1:])
-        case "u":
+        case "-u":
             todoList.uncheckEntry(args[1:])
+        case "-n":
+            todoList.addNote(args[1:])
         }
-
-    /*
-    if (args[0] == "init") {
-        makeInit()
-    } else if (args[0] == "a") {
-        todoList.addEntry(args[1:])
-    } else if (args[0] == "l") {
-        todoList.showEntries(args[1:])
-    } else if (args[0] == "c") {
-        todoList.checkEntry(args[1:])
-    } else if (args[0] == "d") {
-        todoList.deleteEntry(args[1:])
-    } else if (args[0] == "u") {
-        todoList.uncheckEntry(args[1:])
-    }*/
-
 }

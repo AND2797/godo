@@ -1,159 +1,159 @@
 package main
 
-
 import (
-        "strconv"
-        "fmt"
-    )
+	"fmt"
+	"log"
+	"strconv"
+)
 
-type Task struct{
-    TaskID              int     `json:"taskID"`
-    TaskDescription     string  `json:"taskDescription"`
-    TaskProject         string  `json:"project"`
-    TaskStatus          bool    `json:"status"`
-    TaskDue             string  `json:"Due"`
-    TaskNote            string  `json:"Notes"`
+type Task struct {
+	TaskID          int    `json:"taskID"`
+	TaskDescription string `json:"taskDescription"`
+	TaskProject     string `json:"project"`
+	TaskStatus      bool   `json:"status"`
+	TaskDue         string `json:"Due"`
+	TaskNote        string `json:"Notes"`
 }
 
-
-type Todo struct{
-    SavePath      string   `json:"config path"`
-    CurrentID     int      `json:"currentID"`
-    Tasks         []*Task  `json:"Task"`
+type Todo struct {
+	SavePath  string  `json:"config path"`
+	CurrentID int     `json:"currentID"`
+	Tasks     []*Task `json:"Task"`
 }
-
-
 
 func render(task *Task) {
-    var check string
-    var project string
-    if task.TaskStatus {
-        check = "[x]"
-    } else {
-        check = "[ ]"
-    }
+	var check string
+	var project string
+	if task.TaskStatus {
+		check = "[x]"
+	} else {
+		check = "[ ]"
+	}
 
-    if task.TaskProject != ""{
-        project = fmt.Sprintf("project: %s", task.TaskProject)
-    }
-    fmt.Printf("%d      %s   %s     %s\n", task.TaskID, check, task.TaskDescription, project)
+	if task.TaskProject != "" {
+		project = fmt.Sprintf("project: %s", task.TaskProject)
+	}
+	fmt.Printf("%d      %s   %s     %s\n", task.TaskID, check, task.TaskDescription, project)
 }
 
-func (todoList *Todo) addNote(args  []string){
-    taskNum,_ := strconv.Atoi(args[0])
-    taskText := args[1]
-    for _, task := range todoList.Tasks {
+func (todoList *Todo) addNote(args []string) {
+	taskNum, _ := strconv.Atoi(args[0])
+	taskText := args[1]
+	for _, task := range todoList.Tasks {
 
-        if task.TaskID == taskNum {
-            task.TaskNote = taskText
-            break
-        }
-    }
-    todoList.saveInit()
+		if task.TaskID == taskNum {
+			task.TaskNote = taskText
+			break
+		}
+	}
+	todoList.saveInit()
 }
 
 func (todoList *Todo) addEntry(args []string) {
 
-    newTask := &Task{}
-    fmt.Println("Task: ")
-    fmt.Scanln(newTask.TaskDescription)
-    fmt.Printf(newTask.TaskDescription)
-    //description := args[0]
-    //newTask := &Task{}
-    //if len(args) >= 2 && args[1] == "+p" {
-    //    newTask.TaskProject = args[2][2:]
-    //}
-    //todoList.CurrentID = todoList.CurrentID + 1
-    //newTask.TaskID = todoList.CurrentID
-    //newTask.TaskDescription = description
-    //newTask.TaskStatus = false
-    //todoList.Tasks = append(todoList.Tasks, newTask)
-    todoList.saveInit()
+	newTask := &Task{}
+	var TaskDescription string
+	fmt.Println("Task: ")
+	_, err := fmt.Scanln(&TaskDescription)
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Printf(TaskDescription)
+	//description := args[0]
+	//newTask := &Task{}
+	//if len(args) >= 2 && args[1] == "+p" {
+	//    newTask.TaskProject = args[2][2:]
+	//}
+	todoList.CurrentID = todoList.CurrentID + 1
+	newTask.TaskID = todoList.CurrentID
+	newTask.TaskDescription = TaskDescription 
+	newTask.TaskStatus = false
+	todoList.Tasks = append(todoList.Tasks, newTask)
+	todoList.saveInit()
 }
 
-func (todoList *Todo) showNote(taskID string){
-    taskIDint, _ := strconv.Atoi(taskID)
-    for _, val := range todoList.Tasks{
-        if val.TaskID == taskIDint {
-            render(val)
-            fmt.Println("NOTE: ", val.TaskNote)
-        }
-    }
+func (todoList *Todo) showNote(taskID string) {
+	taskIDint, _ := strconv.Atoi(taskID)
+	for _, val := range todoList.Tasks {
+		if val.TaskID == taskIDint {
+			render(val)
+			fmt.Println("NOTE: ", val.TaskNote)
+		}
+	}
 }
 
-func (todoList *Todo) showProjects(project string){
-    for _, val := range todoList.Tasks {
-        if val.TaskProject == project{
-            render(val)
-        }
-    }
+func (todoList *Todo) showProjects(project string) {
+	for _, val := range todoList.Tasks {
+		if val.TaskProject == project {
+			render(val)
+		}
+	}
 }
 
 func (todoList *Todo) showEntries(args []string) {
-    argLength := len(args)
+	argLength := len(args)
 
-    switch argLength := argLength; argLength{
-        case 0:
-            if len(args) == 0{
-                for _, val := range todoList.Tasks {
-                    render(val)
-                }
-            }
-        case 1:
-            cueArgs := args[0]
-            switch cuePrompt := args[0][0:2]; cuePrompt{
-                case "p:":
-                    todoList.showProjects(cueArgs[2:])
-                case "n:":
-                    todoList.showNote(cueArgs[2:])
-                default:
-                    fmt.Println("no case match.")
-                }
-        default:
-            fmt.Println("default")
+	switch argLength := argLength; argLength {
+	case 0:
+		if len(args) == 0 {
+			for _, val := range todoList.Tasks {
+				render(val)
+			}
+		}
+	case 1:
+		cueArgs := args[0]
+		switch cuePrompt := args[0][0:2]; cuePrompt {
+		case "p:":
+			todoList.showProjects(cueArgs[2:])
+		case "n:":
+			todoList.showNote(cueArgs[2:])
+		default:
+			fmt.Println("no case match.")
+		}
+	default:
+		fmt.Println("default")
 
-    }
+	}
 }
 
 func (todoList *Todo) checkEntry(args []string) {
-    taskNum, _ := strconv.Atoi(args[0])
-    for _, task := range todoList.Tasks {
+	taskNum, _ := strconv.Atoi(args[0])
+	for _, task := range todoList.Tasks {
 
-        if task.TaskID == taskNum {
-            task.TaskStatus = true
-            break
-        }
-    }
-    todoList.saveInit()
+		if task.TaskID == taskNum {
+			task.TaskStatus = true
+			break
+		}
+	}
+	todoList.saveInit()
 }
 
 func (todoList *Todo) uncheckEntry(args []string) {
 
-    taskNum, _ := strconv.Atoi(args[0])
-    for _, task := range todoList.Tasks {
+	taskNum, _ := strconv.Atoi(args[0])
+	for _, task := range todoList.Tasks {
 
-        if task.TaskID == taskNum {
-            task.TaskStatus = false
-            break
-        }
-    }
-    todoList.saveInit()
+		if task.TaskID == taskNum {
+			task.TaskStatus = false
+			break
+		}
+	}
+	todoList.saveInit()
 }
 
 func (todoList *Todo) deleteEntry(args []string) {
-    var taskIdx int
-    taskNum, _ := strconv.Atoi(args[0])
+	var taskIdx int
+	taskNum, _ := strconv.Atoi(args[0])
 
-    for idx, task := range todoList.Tasks{
-        if task.TaskID == taskNum{
-            taskIdx = idx
-        }
-        if task.TaskID > taskNum{
-            task.TaskID = task.TaskID - 1
-        }
-    }
-    todoList.CurrentID = todoList.CurrentID - 1
-    todoList.Tasks = append(todoList.Tasks[:taskIdx], todoList.Tasks[taskIdx + 1:]...)
-    todoList.saveInit()
+	for idx, task := range todoList.Tasks {
+		if task.TaskID == taskNum {
+			taskIdx = idx
+		}
+		if task.TaskID > taskNum {
+			task.TaskID = task.TaskID - 1
+		}
+	}
+	todoList.CurrentID = todoList.CurrentID - 1
+	todoList.Tasks = append(todoList.Tasks[:taskIdx], todoList.Tasks[taskIdx+1:]...)
+	todoList.saveInit()
 }
-

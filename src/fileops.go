@@ -57,11 +57,7 @@ func (todoList *Todo) addEntry(args []string) {
 	fmt.Scanln(&TaskDescription)
 	fmt.Printf("Project: ")
 	fmt.Scanln(&TaskProject)
-	//description := args[0]
-	//newTask := &Task{}
-	//if len(args) >= 2 && args[1] == "+p" {
-	//    newTask.TaskProject = args[2][2:]
-	//}
+
 	todoList.CurrentID = todoList.CurrentID + 1
 	newTask.TaskID = todoList.CurrentID
 	newTask.TaskDescription = TaskDescription

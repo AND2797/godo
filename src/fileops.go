@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 )
 
@@ -53,12 +52,11 @@ func (todoList *Todo) addEntry(args []string) {
 
 	newTask := &Task{}
 	var TaskDescription string
-	fmt.Println("Task: ")
-	_, err := fmt.Scanln(&TaskDescription)
-	if err != nil {
-		log.Println(err)
-	}
-	fmt.Printf(TaskDescription)
+	var TaskProject string
+	fmt.Printf("Task: ")
+	fmt.Scanln(&TaskDescription)
+	fmt.Printf("Project: ")
+	fmt.Scanln(&TaskProject)
 	//description := args[0]
 	//newTask := &Task{}
 	//if len(args) >= 2 && args[1] == "+p" {
@@ -66,7 +64,8 @@ func (todoList *Todo) addEntry(args []string) {
 	//}
 	todoList.CurrentID = todoList.CurrentID + 1
 	newTask.TaskID = todoList.CurrentID
-	newTask.TaskDescription = TaskDescription 
+	newTask.TaskDescription = TaskDescription
+	newTask.TaskProject = TaskProject
 	newTask.TaskStatus = false
 	todoList.Tasks = append(todoList.Tasks, newTask)
 	todoList.saveInit()

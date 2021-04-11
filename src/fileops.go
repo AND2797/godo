@@ -53,15 +53,18 @@ func (todoList *Todo) addEntry(args []string) {
 	newTask := &Task{}
 	var TaskDescription string
 	var TaskProject string
+	var TaskDue string
 	fmt.Printf("Task: ")
 	fmt.Scanln(&TaskDescription)
 	fmt.Printf("Project: ")
 	fmt.Scanln(&TaskProject)
-
+	fmt.Printf("Due: ")
+	fmt.Scanln(&TaskDue)
 	todoList.CurrentID = todoList.CurrentID + 1
 	newTask.TaskID = todoList.CurrentID
 	newTask.TaskDescription = TaskDescription
 	newTask.TaskProject = TaskProject
+	newTask.TaskDue = TaskDue
 	newTask.TaskStatus = false
 	todoList.Tasks = append(todoList.Tasks, newTask)
 	todoList.saveInit()

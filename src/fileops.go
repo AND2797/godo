@@ -53,16 +53,21 @@ func (todoList *Todo) addNote(args  []string){
 }
 
 func (todoList *Todo) addEntry(args []string) {
-    description := args[0]
+
     newTask := &Task{}
-    if len(args) >= 2 && args[1] == "+p" {
-        newTask.TaskProject = args[2][2:]
-    }
-    todoList.CurrentID = todoList.CurrentID + 1
-    newTask.TaskID = todoList.CurrentID
-    newTask.TaskDescription = description
-    newTask.TaskStatus = false
-    todoList.Tasks = append(todoList.Tasks, newTask)
+    fmt.Println("Task: ")
+    fmt.Scanln(newTask.TaskDescription)
+    fmt.Printf(newTask.TaskDescription)
+    //description := args[0]
+    //newTask := &Task{}
+    //if len(args) >= 2 && args[1] == "+p" {
+    //    newTask.TaskProject = args[2][2:]
+    //}
+    //todoList.CurrentID = todoList.CurrentID + 1
+    //newTask.TaskID = todoList.CurrentID
+    //newTask.TaskDescription = description
+    //newTask.TaskStatus = false
+    //todoList.Tasks = append(todoList.Tasks, newTask)
     todoList.saveInit()
 }
 
